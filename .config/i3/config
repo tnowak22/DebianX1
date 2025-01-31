@@ -1,0 +1,182 @@
+# set modifier
+set $super Mod4
+set $alt Mod1
+set $term alacritty
+set $browser chromium
+
+# set font
+font pango:Ionicons 9, Ubuntu Regular 18
+
+# multiple monitors // move workspace to another monitor
+bindsym $super+Next move workspace to output right
+bindsym $super+Prior move workspace to output left
+
+# use mouse+$super to drag floating windows to their wanted position
+floating_modifier $super
+
+# autostart
+exec --no-startup-id nitrogen --restore
+exec --no-startup-id nm-applet &
+exec --no-startup-id remmina -i &
+exec --no-startup-id picom &
+exec --no-startup-id volumeicon &
+
+# start a terminal
+bindsym $super+Return exec $term
+
+# launch vscode
+bindsym $super+v exec codium
+
+# open web browser
+bindsym $super+c exec $browser --force-device-scale-factor=1.5
+
+#### TRVNA ####
+bindsym $super+Shift+v exec xterm -e /bin/bash -c /opt/TRVNA.AppImage
+
+# launch rofi
+bindsym $super+d exec rofi -show run -font "Ubuntu 30"
+
+# take a screenshot
+bindsym Print exec scrot 'Cheese_%a-%d%b%y_%H.%M.png' -e 'xdg-open ~/$f'
+
+# launch thunar file explorer 
+bindsym $super+e exec thunar
+
+# change volume and brightness
+bindsym XF86AudioRaiseVolume exec amixer -q set Master 5%+
+bindsym XF86AudioLowerVolume exec amixer -q set Master 5%-
+bindsym XF86AudioMute exec amixer set Master toggle
+bindsym XF86MonBrightnessUp exec brightnessctl set 5%+
+bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
+
+# kill focused window
+bindsym $super+q kill
+
+# change focus
+bindsym $super+Left focus left
+bindsym $super+Down focus down
+bindsym $super+Up focus up
+bindsym $super+Right focus right
+
+# move focused window
+bindsym $super+Shift+Left move left
+bindsym $super+Shift+Down move down
+bindsym $super+Shift+Up move up
+bindsym $super+Shift+Right move right
+
+# split in horizontal or vertical orientation
+bindsym $alt+h split h
+bindsym $alt+v split v
+
+# change split direction for already opened windows
+bindsym $super+s layout toggle split
+
+# enter fullscreen mode for the focused container
+bindsym $super+f fullscreen toggle
+
+# toggle tiling / floating
+bindsym $super+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $super+Shift+space focus mode_toggle
+
+set $tag1 "1:"
+set $tag2 "2:"
+set $tag3 "3:"
+set $tag4 "4:"
+set $tag5 "5:"
+set $tag6 "6:"
+set $tag7 "7:"
+set $tag8 "8:"
+set $tag9 "9:"
+
+# switch to workspace
+bindsym $super+Control+Right workspace next
+bindsym $super+Control+Left workspace prev
+bindsym $super+1 workspace $tag1
+bindsym $super+2 workspace $tag2
+bindsym $super+3 workspace $tag3
+bindsym $super+4 workspace $tag4
+bindsym $super+5 workspace $tag5
+bindsym $super+6 workspace $tag6
+bindsym $super+7 workspace $tag7
+bindsym $super+8 workspace $tag8
+bindsym $super+9 workspace $tag9
+
+# move focused container to workspace
+bindsym $super+Shift+1 move container to workspace $tag1
+bindsym $super+Shift+2 move container to workspace $tag2
+bindsym $super+Shift+3 move container to workspace $tag3
+bindsym $super+Shift+4 move container to workspace $tag4
+bindsym $super+Shift+5 move container to workspace $tag5
+bindsym $super+Shift+6 move container to workspace $tag6
+bindsym $super+Shift+7 move container to workspace $tag7
+bindsym $super+Shift+8 move container to workspace $tag8
+bindsym $super+Shift+9 move container to workspace $tag9
+
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $super+BackSpace exec "i3-msg restart"
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+	bindsym Left resize shrink width 5 px or 5 ppt
+	bindsym Down resize grow height 5 px or 5 ppt
+	bindsym Up resize shrink height 5 px or 5 ppt
+	bindsym Right resize grow width 5 px or 5 ppt
+	bindsym Return mode "default"
+	}
+bindsym $super+r mode "resize"
+
+# Set shut down, restart and locking features
+bindsym $super+0 mode "$mode_system"
+set $mode_system (l)ock, (e)xit, (s)uspend, (r)eboot, (Shift+s)hutdown
+mode "$mode_system" {
+    bindsym l exec --no-startup-id i3lock -i /home/ted/.config/.windowpain.png, mode "default"
+    bindsym s exec --no-startup-id /usr/bin/systemctl suspend, mode "default"
+    bindsym e exec --no-startup-id i3-msg exit, mode "default"
+    bindsym r exec --no-startup-id /usr/sbin/reboot, mode "default"
+    bindsym Shift+s exec --no-startup-id /usr/sbin/shutdown now, mode "default"
+
+    # exit system mode: "Enter" or "Escape"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+# panel
+bar {
+	tray_output primary
+	status_command i3status
+	i3bar_command i3bar --transparency
+	position top
+	workspace_min_width 24
+	padding 4px 4px 4px 4px
+	strip_workspace_numbers yes
+
+	colors {
+		background #141c214D
+		statusline #ffffff
+		separator #5e5e5e
+
+	# colour of border, background, and text
+		focused_workspace #141c21 #d12f2c #93a1a1
+		active_workspace #141c21 #141c21 #93a1a1
+		inactive_workspace #141c21 #141c21 #93a1a1
+		urgent_workspace #141c21 #f8f8ff #000000
+	}
+}
+
+# colour of border, background, text, indicator, and child_border
+client.focused #d12f2c #263640 #93a1a1 #696ebf #2587cc1
+client.focused_inactive #263640 #b08500 #93a1a1 #263640 #263640
+client.unfocused #263640 #b08500 #93a1a1 #263640 #263640
+client.urgent #263640 #b08500 #93a1a1 #263640 #263640
+client.placeholder #263640 #b08500 #93a1a1 #263640 #263640
+client.background #263640
+
+# window rules, you can find the window class using xprop
+for_window [class=Eog|Sxiv|feh|mpv|Vlc|File-roller|Xarchiver] floating enable
+for_window [class=Eog|Sxiv|feh|mpv|Vlc|File-roller|Xarchiver] focus
+for_window [class=".*"] border pixel 4
+hide_edge_borders smart
+gaps inner 12
+smart_gaps on
